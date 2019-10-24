@@ -45,20 +45,35 @@ include('config.php');
                         $email = $_POST["email"];
                         $senha = md5($_POST["senha"]);
 
-                        $sql = "INSERT INTO usuarios SET nome = :nomeesobrenome , email = :email , senha = :senha";
+                        $sql = "SELECT email FROM usuarios WHERE email = :email";
                         $sql = $pdo->prepare($sql);
-                        $sql->bindValue(':nomeesobrenome', $nome);
                         $sql->bindValue(':email', $email);
-                        $sql->bindValue(':senha', $senha);
                         $sql->execute();
-                        ?>
-                        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                            Usuário Cadastrado com Sucesso
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    <?php } ?>
+
+                        if ($sql->rowCount() > 0) { ?>
+                            <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+                                Já existe esse email
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <?php } else {
+
+                                $sql = "INSERT INTO usuarios SET nome = :nomeesobrenome , email = :email , senha = :senha";
+                                $sql = $pdo->prepare($sql);
+                                $sql->bindValue(':nomeesobrenome', $nome);
+                                $sql->bindValue(':email', $email);
+                                $sql->bindValue(':senha', $senha);
+                                $sql->execute();
+                                ?>
+                            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                                Usuário Cadastrado com Sucesso
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                    <?php }
+                    } ?>
 
                     <button class="btn btn-primary w-100">Entrar</button>
                     <h5 class="p-4">Já tem cadastro ? <a href="login.php">Login</a></h5>
