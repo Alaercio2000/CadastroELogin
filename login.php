@@ -27,6 +27,37 @@ require 'config.php';
                     <label class="p-2" for="senha">Senha</label>
                     <input type="password" class="form-control" id="senha" aria-describedby="emailHelp" placeholder="Senha" name="senhaLogin" required>
                 </div>
+                <?php
+
+                if ($_POST) {
+
+                    $email = $_POST['emailLogin'];
+                    $senha = md5($_POST['senhaLogin']);
+
+                    $sql = "SELECT email and senha FROM usuarios WHERE email= :email and senha = :senha";
+                    $sql = $pdo->prepare($sql);
+                    $sql->bindValue(":email", $email);
+                    $sql->bindValue(":senha", $senha);
+                    $sql->execute();
+
+                    if ($sql->rowCount() > 0) { ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Usuario Aceito
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php } else { ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            Acesso Negado
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                <?php
+                    }
+                }
+                ?>
                 <div class="form-group">
                     <button class="btn btn-primary w-100">Entrar</button>
                     <h5 class="p-4">Não tem cadastro ? <a href="cadastro.php">Cadastrar</a></h5>

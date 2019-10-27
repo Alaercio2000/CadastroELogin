@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+require('config.php');
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +75,7 @@ include('config.php');
                     <?php }
                     } ?>
 
-                    <button class="btn btn-primary w-100">Entrar</button>
+                    <button class="btn btn-primary w-100">Enviar</button>
                     <h5 class="p-4">Já tem cadastro ? <a href="login.php">Login</a></h5>
                 </div>
             </form>
